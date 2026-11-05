@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --background: #f4f7ef;
-  --surface: #fffefa;
-  --surface-soft: #f8fbf3;
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #fcfdfb;
   --text: #183728;
   --muted: #718276;
   --accent: #579435;
   --border: #e1eadb;
-  --shadow: 0 10px 24px rgba(39, 78, 42, 0.06);
+  --shadow: 0 8px 20px rgba(39, 78, 42, 0.05);
   font-family: "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
@@ -45,7 +45,7 @@ textarea:focus-visible {
   width: min(100% - 32px, 520px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 24px 0 32px;
+  padding: 22px 0 28px;
 }
 
 .screen[hidden] {
@@ -98,7 +98,7 @@ p {
 }
 
 .hero {
-  padding: 48px 0 0;
+  padding: 38px 0 0;
 }
 
 .hero-copy {
@@ -126,18 +126,18 @@ p {
 .status-area {
   position: relative;
   display: flex;
-  min-height: 214px;
+  min-height: 184px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 24px;
+  padding-top: 18px;
 }
 
 .status-button {
   position: relative;
   display: grid;
   width: 100%;
-  height: 164px;
+  height: 136px;
   place-items: center;
   border: 1px solid #cfe2c4;
   border-radius: 26px;
@@ -217,7 +217,7 @@ p {
 
 .status-label {
   position: absolute;
-  bottom: 29px;
+  bottom: 24px;
   margin: 0;
   color: #2f6d29;
   font-size: 17px;
@@ -310,7 +310,7 @@ p {
 }
 
 .record-section {
-  margin-top: 66px;
+  margin-top: 48px;
   padding-top: 28px;
   border-top: 1px solid #f1f0f5;
 }
