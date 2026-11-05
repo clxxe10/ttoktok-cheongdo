@@ -1,133 +1,66 @@
-const statuses = [
-  { label: "괜찮아요", state: 0 },
-  { label: "조금 불편해요", state: 1 },
-  { label: "아파요", state: 2 },
-  { label: "도움이 필요해요", state: 3 },
-  { label: "오늘 기록하기", state: 4 },
-];
-
 const screens = [...document.querySelectorAll(".screen")];
-const statusButton = document.querySelector("#status-button");
-const nextButton = document.querySelector("#next-button");
-const statusLabel = document.querySelector("#status-label");
-const statusSaveNote = document.querySelector("#status-save-note");
-const progressDots = [...document.querySelectorAll(".progress-dot")];
-const progressContainer = document.querySelector("#progress-dots");
-const symptomSummary = document.querySelector("#symptom-summary");
-const symptomFlow = document.querySelector("#symptom-flow");
-const recentHomeRecord = document.querySelector("#recent-home-record");
-const guardianStatusValue = document.querySelector("#guardian-status-value");
-const recentStatusValue = document.querySelector("#recent-status-value");
-const recentLifeValue = document.querySelector("#recent-life-value");
-const recentMemoValue = document.querySelector("#recent-memo-value");
-const memoInput = document.querySelector("#memo-input");
-const memoResult = document.querySelector("#memo-result");
+const cropChoices = document.querySelector("#crop-choices");
+const conditionChoices = document.querySelector("#condition-choices");
+const customCrop = document.querySelector("#custom-crop");
+const continueIntakeButton = document.querySelector("#continue-intake-button");
+const selectedCropLabel = document.querySelector("#selected-crop-label");
+const analysisSummary = document.querySelector("#analysis-summary");
+const resultVisual = document.querySelector("#result-visual");
+const resultDescription = document.querySelector("#result-description");
+const photoInput = document.querySelector("#photo-input");
 
-let currentStatusIndex = 0;
-let symptomData = {
-  location: "",
-  pain: "",
-  detail: "",
-};
-const latestRecord = {
-  status: "괜찮아요",
-  life: "아직 기록 없음",
-  memo: "아직 기록 없음",
+const record = {
+  crop: "",
+  condition: "",
+  onset: "",
+  part: "",
+  signs: [],
+  other: "",
+  hasPhoto: false,
 };
 
 function showScreen(screenId) {
   screens.forEach((screen) => {
-    const isActive = screen.id === screenId;
-    screen.hidden = !isActive;
-    screen.classList.toggle("is-active", isActive);
+    const active = screen.id === screenId;
+    screen.hidden = !active;
+    screen.classList.toggle("is-active", active);
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function showNextStatus() {
-  currentStatusIndex = (currentStatusIndex + 1) % statuses.length;
-  updateStatus();
-}
-
-function updateStatus() {
-  const currentStatus = statuses[currentStatusIndex];
-
-  statusSaveNote.hidden = true;
-  statusLabel.textContent = currentStatus.label;
-  statusButton.dataset.state = currentStatusIndex;
-  statusButton.setAttribute(
-    "aria-label",
-    `현재 상태: ${currentStatus.label}. 눌러서 다음 상태 보기`,
-  );
-  progressContainer.setAttribute(
-    "aria-label",
-    `상태 진행 ${currentStatusIndex + 1} / ${statuses.length}`,
-  );
-
-  progressDots.forEach((dot, index) => {
-    dot.classList.toggle("is-active", index === currentStatusIndex);
+function selectSingle(group, selectedButton) {
+  group.querySelectorAll("button").forEach((button) => {
+    button.classList.toggle("is-selected", button === selectedButton);
   });
 }
 
-function renderLatestRecord() {
-  recentHomeRecord.textContent = `${latestRecord.status} · 오늘`;
-  guardianStatusValue.textContent = latestRecord.status;
-  recentStatusValue.textContent = latestRecord.status;
-  recentLifeValue.textContent = latestRecord.life;
-  recentMemoValue.textContent = latestRecord.memo;
-}
-
-function handleNextAction() {
-  statusSaveNote.hidden = true;
-
-  if (currentStatusIndex === 0) {
-    latestRecord.status = statuses[currentStatusIndex].label;
-    renderLatestRecord();
-    statusSaveNote.hidden = false;
-    return;
-  }
-
-  if (currentStatusIndex === 1 || currentStatusIndex === 2) {
-    resetSymptomFlow();
-    showScreen("symptom-screen");
-    return;
-  }
-
-  if (currentStatusIndex === 3) {
-    showScreen("help-screen");
-    return;
-  }
-
-  if (currentStatusIndex === 4) {
-    showScreen("memo-screen");
-  }
-}
-
-function resetSymptomFlow() {
-  symptomData = { location: "", pain: "", detail: "" };
-  document.querySelector('[data-question="location"]').hidden = false;
-  document.querySelector("#pain-step").hidden = true;
-  document.querySelector("#detail-step").hidden = true;
-  document.querySelector("#symptom-detail").value = "";
+function resetRecord() {
+  record.crop = "";
+  record.condition = "";
+  record.onset = "";
+  record.part = "";
+  record.signs = [];
+  record.other = "";
+  record.hasPhoto = false;
   document.querySelectorAll(".choice-group button").forEach((button) => {
     button.classList.remove("is-selected");
   });
+  customCrop.value = "";
+  customCrop.hidden = true;
+  photoInput.value = "";
+  continueIntakeButton.disabled = true;
 }
 
-function renderSymptomSummary() {
-  const detail = symptomData.detail.trim() || "추가 설명 없음";
-  const summaryItems = [
-    ["불편한 곳", symptomData.location],
-    ["느낌", symptomData.pain],
-    ["추가 내용", detail],
-  ];
+function getCropName() {
+  return record.crop === "기타" ? customCrop.value.trim() || "기타 작물" : record.crop;
+}
 
-  symptomSummary.replaceChildren(
-    ...summaryItems.map(([label, value]) => {
+function renderSummary(lines) {
+  analysisSummary.replaceChildren(
+    ...lines.map(([label, value]) => {
       const line = document.createElement("div");
       const labelElement = document.createElement("span");
       const valueElement = document.createElement("strong");
-
       line.className = "summary-line";
       labelElement.textContent = label;
       valueElement.textContent = value;
@@ -137,80 +70,122 @@ function renderSymptomSummary() {
   );
 }
 
-statusButton.addEventListener("click", showNextStatus);
-nextButton.addEventListener("click", handleNextAction);
+function analyzeRecord() {
+  const signs = record.signs;
+  const hasHighSignal = signs.some((sign) => ["곰팡이", "썩음", "시듦"].includes(sign));
+  const hasSpreadSignal = signs.includes("반점") && signs.includes("잎 말림");
+  const isLong = record.onset === "일주일 전";
+  const risk = hasHighSignal || (hasSpreadSignal && isLong) ? "빠른 확인 필요" : "관찰 필요";
+  const title = risk === "빠른 확인 필요" ? "작물 상태를 빠르게 확인해주세요" : "변화를 기록해두고 관찰해주세요";
+  const possibleCause = hasHighSignal
+    ? "곰팡이성 병해 또는 생육 스트레스 가능성"
+    : hasSpreadSignal
+      ? "잎의 병해·해충 피해 가능성"
+      : "해충 피해 또는 환경 스트레스 가능성";
+  const actions = risk === "빠른 확인 필요"
+    ? "영향받은 부위를 따로 확인하고, 주변으로 번지는지 오늘 안에 농업기술센터에 문의하세요."
+    : "같은 부위의 변화를 24시간 뒤 다시 확인하고, 사진과 함께 기록을 남겨두세요.";
+
+  resultVisual.textContent = risk === "빠른 확인 필요" ? "!" : "△";
+  resultVisual.classList.toggle("help-visual", risk === "빠른 확인 필요");
+  resultDescription.textContent = "입력한 증상과 공개 병해충 정보의 분류 항목을 참고한 시범 분석입니다.";
+  renderSummary([
+    ["작물", getCropName()],
+    ["위험도", risk],
+    ["가능성", possibleCause],
+    ["먼저 할 일", actions],
+    ["기록 정보", `${record.onset} · ${record.part} · ${signs.join(", ")}`],
+  ]);
+  document.querySelector("#result-title").textContent = title;
+  showScreen("result-screen");
+}
+
+document.querySelector("#start-button").addEventListener("click", () => showScreen("intake-screen"));
+document.querySelector("#start-analysis-button").addEventListener("click", () => showScreen("intake-screen"));
+
+cropChoices.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-crop]");
+  if (!button) return;
+  record.crop = button.dataset.crop;
+  selectSingle(cropChoices, button);
+  customCrop.hidden = record.crop !== "기타";
+  continueIntakeButton.disabled = !record.crop || !record.condition;
+});
+
+conditionChoices.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-condition]");
+  if (!button) return;
+  record.condition = button.dataset.condition;
+  selectSingle(conditionChoices, button);
+  continueIntakeButton.disabled = !record.crop || !record.condition;
+});
+
+customCrop.addEventListener("input", () => {
+  continueIntakeButton.disabled = !record.crop || !record.condition;
+});
+
+continueIntakeButton.addEventListener("click", () => {
+  if (record.condition === "normal") {
+    document.querySelector("#normal-crop-label").textContent = `${getCropName()} 상태 기록`;
+    showScreen("normal-screen");
+    return;
+  }
+  selectedCropLabel.textContent = `${getCropName()} 이상 기록`;
+  showScreen("detail-screen");
+});
+
+document.querySelector("#onset-choices").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-onset]");
+  if (!button) return;
+  record.onset = button.dataset.onset;
+  selectSingle(document.querySelector("#onset-choices"), button);
+});
+
+document.querySelector("#part-choices").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-part]");
+  if (!button) return;
+  record.part = button.dataset.part;
+  selectSingle(document.querySelector("#part-choices"), button);
+});
+
+document.querySelector("#sign-choices").addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-sign]");
+  if (!button) return;
+  const sign = button.dataset.sign;
+  button.classList.toggle("is-selected");
+  record.signs = record.signs.includes(sign)
+    ? record.signs.filter((item) => item !== sign)
+    : [...record.signs, sign];
+});
+
+photoInput.addEventListener("change", () => {
+  record.hasPhoto = photoInput.files.length > 0;
+});
+
+document.querySelector("#analyze-button").addEventListener("click", () => {
+  record.other = document.querySelector("#other-sign").value.trim();
+  if (record.other) record.signs = [...record.signs, `기타: ${record.other}`];
+  if (!record.onset || !record.part || record.signs.length === 0) {
+    window.alert("발생 시점, 부위, 증상을 하나 이상 선택해주세요.");
+    return;
+  }
+  analyzeRecord();
+});
+
+document.querySelector("#new-analysis-button").addEventListener("click", () => {
+  resetRecord();
+  showScreen("intake-screen");
+});
+
+document.querySelector("#source-button").addEventListener("click", () => showScreen("source-screen"));
 
 document.querySelectorAll("[data-home]").forEach((button) => {
-  button.addEventListener("click", () => showScreen("home-screen"));
+  button.addEventListener("click", () => {
+    resetRecord();
+    showScreen("home-screen");
+  });
 });
 
 document.querySelectorAll("[data-screen]").forEach((button) => {
   button.addEventListener("click", () => showScreen(button.dataset.screen));
-});
-
-symptomFlow.addEventListener("click", (event) => {
-  const button = event.target.closest("button[data-value]");
-  if (!button) {
-    return;
-  }
-
-  const group = button.closest(".choice-group");
-  group.querySelectorAll("button").forEach((choice) => {
-    choice.classList.toggle("is-selected", choice === button);
-  });
-
-  if (group.dataset.question === "location") {
-    symptomData.location = button.dataset.value;
-    group.hidden = true;
-    document.querySelector("#pain-step").hidden = false;
-    return;
-  }
-
-  symptomData.pain = button.dataset.value;
-  document.querySelector("#pain-step").hidden = true;
-  document.querySelector("#detail-step").hidden = false;
-  document.querySelector("#symptom-detail").focus();
-});
-
-document.querySelector("#symptom-record-button").addEventListener("click", () => {
-  symptomData.detail = document.querySelector("#symptom-detail").value;
-  renderSymptomSummary();
-  showScreen("symptom-result-screen");
-});
-
-document.querySelector("#notify-guardian-button").addEventListener("click", (event) => {
-  event.currentTarget.textContent = "알림 내용을 준비했어요";
-  event.currentTarget.disabled = true;
-});
-
-document.querySelector("#save-symptom-button").addEventListener("click", (event) => {
-  latestRecord.status = statuses[currentStatusIndex].label;
-  latestRecord.life = `${symptomData.location} · ${symptomData.pain}`;
-  renderLatestRecord();
-  event.currentTarget.textContent = "기록을 저장했어요";
-  event.currentTarget.disabled = true;
-  showScreen("home-screen");
-});
-
-document.querySelector("#organize-memo-button").addEventListener("click", () => {
-  const memo = memoInput.value.trim();
-  memoResult.querySelector("p:last-child").textContent = memo
-    ? `오늘은 “${memo}”라고 기록했어요.`
-    : "아직 입력한 내용이 없어, 오늘의 이야기를 먼저 적어주세요.";
-  memoResult.hidden = false;
-});
-
-document.querySelector("#save-memo-button").addEventListener("click", (event) => {
-  const memo = memoInput.value.trim();
-  latestRecord.memo = memo || "짧은 메모를 남겼어요";
-  renderLatestRecord();
-  event.currentTarget.textContent = "메모를 저장했어요";
-  event.currentTarget.disabled = true;
-  showScreen("home-screen");
-});
-
-document.querySelector("#request-help-button").addEventListener("click", (event) => {
-  event.currentTarget.textContent = "도움 요청 내용을 준비했어요";
-  event.currentTarget.disabled = true;
-  document.querySelector("#help-feedback").hidden = false;
 });
