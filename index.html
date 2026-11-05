@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="오늘의 안부와 생활 기록을 남기는 똑똑 앱"
+    />
+    <title>똑똑 | 오늘의 안부</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="screen is-active" id="home-screen" aria-labelledby="page-title">
+        <header class="top-bar">
+          <span class="brand-name">똑똑</span>
+          <button class="text-button" type="button" data-screen="guardian-screen">
+            보호자 화면 보기
+          </button>
+        </header>
+
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <h1 id="page-title">오늘은 어땠나요?</h1>
+            <p class="hero-description">천천히, 지금 상태를 알려주세요.</p>
+          </div>
+
+          <div class="status-area">
+            <button
+              class="status-button"
+              id="status-button"
+              data-state="0"
+              type="button"
+              aria-label="현재 상태: 괜찮아요. 눌러서 다음 상태 보기"
+            >
+              <span class="status-glow" aria-hidden="true"></span>
+            </button>
+            <p class="status-label" id="status-label">괜찮아요</p>
+          </div>
+
+          <div class="status-controls">
+            <div class="progress-dots" id="progress-dots" aria-label="상태 진행 1 / 5">
+              <span class="progress-dot is-active" aria-hidden="true"></span>
+              <span class="progress-dot" aria-hidden="true"></span>
+              <span class="progress-dot" aria-hidden="true"></span>
+              <span class="progress-dot" aria-hidden="true"></span>
+              <span class="progress-dot" aria-hidden="true"></span>
+            </div>
+            <button class="next-button" id="next-button" type="button">
+              다음
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <p class="status-save-note" id="status-save-note" role="status" hidden>
+            오늘의 안부를 저장했어요.
+          </p>
+        </section>
+
+        <section class="record-section" aria-labelledby="record-heading">
+          <div class="record-heading">
+            <h2 id="record-heading">오늘의 곁</h2>
+          </div>
+          <div class="record-list">
+            <article class="info-card">
+              <div class="card-icon memo-icon" aria-hidden="true">💬</div>
+              <div class="info-card-content">
+                <p class="eyebrow">보호자 메모</p>
+                <h3>오늘 오후 3시에 전화할게요.</h3>
+                <span class="card-meta">보호자가 남긴 메모</span>
+              </div>
+              <span class="card-arrow" aria-hidden="true">›</span>
+            </article>
+
+            <article class="info-card timeline-card">
+              <div class="card-icon plan-icon" aria-hidden="true">☀️</div>
+              <div class="info-card-content">
+                <p class="eyebrow">보호자 계획표</p>
+                <h3>오늘의 일정</h3>
+                <div class="timeline" aria-label="오늘의 계획표">
+                  <div class="timeline-item">
+                    <time datetime="09:00">09:00</time><span>아침 식사</span>
+                  </div>
+                  <div class="timeline-item">
+                    <time datetime="10:00">10:00</time><span>산책</span>
+                  </div>
+                  <div class="timeline-item">
+                    <time datetime="14:00">14:00</time><span>병원 방문</span>
+                  </div>
+                  <div class="timeline-item">
+                    <time datetime="18:00">18:00</time><span>저녁 약 확인</span>
+                  </div>
+                </div>
+              </div>
+              <span class="card-arrow" aria-hidden="true">›</span>
+            </article>
+
+            <article class="info-card">
+              <div class="card-icon care-icon" aria-hidden="true">♡</div>
+              <div class="info-card-content">
+                <p class="eyebrow">최근 안부 기록</p>
+                <h3>괜찮아요 · 어제 18:40</h3>
+                <span class="card-meta">최근 7일 · 5회</span>
+              </div>
+              <span class="card-arrow" aria-hidden="true">›</span>
+            </article>
+          </div>
+        </section>
+
+        <p class="footer-note">천천히 눌러도 괜찮아요</p>
+      </section>
+
+      <section class="screen sub-screen" id="symptom-screen" aria-labelledby="symptom-title" hidden>
+        <header class="sub-header">
+          <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
+          <span class="screen-step">상태 확인</span>
+        </header>
+        <div class="chat-header">
+          <span class="chat-avatar" aria-hidden="true">똑</span>
+          <div>
+            <p class="eyebrow">똑똑 기록 도우미</p>
+            <h1 id="symptom-title">어디가 불편하세요?</h1>
+          </div>
+        </div>
+        <div class="chat-flow" id="symptom-flow">
+          <div class="chat-bubble bot-bubble">천천히 골라주세요.</div>
+          <div class="choice-group" data-question="location">
+            <button type="button" data-value="머리">머리</button>
+            <button type="button" data-value="가슴">가슴</button>
+            <button type="button" data-value="배">배</button>
+            <button type="button" data-value="허리">허리</button>
+            <button type="button" data-value="팔">팔</button>
+            <button type="button" data-value="다리">다리</button>
+            <button type="button" data-value="기타">기타</button>
+          </div>
+          <div class="chat-step" id="pain-step" hidden>
+            <div class="chat-bubble bot-bubble">어떻게 아프세요?</div>
+            <div class="choice-group" data-question="pain">
+              <button type="button" data-value="쑤셔요">쑤셔요</button>
+              <button type="button" data-value="찌르는 느낌">찌르는 느낌</button>
+              <button type="button" data-value="어지러워요">어지러워요</button>
+              <button type="button" data-value="저려요">저려요</button>
+              <button type="button" data-value="잘 모르겠어요">잘 모르겠어요</button>
+            </div>
+          </div>
+          <div class="chat-step" id="detail-step" hidden>
+            <div class="chat-bubble bot-bubble">더 설명하고 싶은 내용이 있나요?</div>
+            <label class="sr-only" for="symptom-detail">증상 설명</label>
+            <textarea id="symptom-detail" rows="4" placeholder="편하게 적어주세요."></textarea>
+            <button class="primary-button wide-button" id="symptom-record-button" type="button">기록하기</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen sub-screen result-screen" id="symptom-result-screen" aria-labelledby="result-title" hidden>
+        <header class="sub-header">
+          <button class="back-button" type="button" data-screen="symptom-screen">← <span>뒤로</span></button>
+          <button class="back-button" type="button" data-home>처음으로</button>
+        </header>
+        <div class="result-visual" aria-hidden="true">✓</div>
+        <p class="eyebrow">오늘의 안부 기록</p>
+        <h1 id="result-title">오늘의 기록을 정리했어요</h1>
+        <p class="result-description">입력한 내용은 진단이 아닌 생활 기록으로 남아요.</p>
+        <div class="summary-card" id="symptom-summary"></div>
+        <div class="stacked-actions">
+          <button class="primary-button wide-button" id="notify-guardian-button" type="button">보호자에게 알리기</button>
+          <button class="secondary-button wide-button" id="save-symptom-button" type="button">기록 저장하기</button>
+        </div>
+      </section>
+
+      <section class="screen sub-screen" id="memo-screen" aria-labelledby="memo-title" hidden>
+        <header class="sub-header">
+          <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
+          <span class="screen-step">오늘의 메모</span>
+        </header>
+        <p class="eyebrow">내가 남기는 기록</p>
+        <h1 id="memo-title">오늘은 어떤 하루였나요?</h1>
+        <p class="screen-description">기억하고 싶은 이야기를 편하게 적어주세요.</p>
+        <label class="sr-only" for="memo-input">오늘의 메모</label>
+        <textarea class="large-input" id="memo-input" rows="8" placeholder="오늘 있었던 일을 적어주세요."></textarea>
+        <div class="stacked-actions">
+          <button class="secondary-button wide-button" id="organize-memo-button" type="button">AI로 정리하기</button>
+          <button class="primary-button wide-button" id="save-memo-button" type="button">저장하기</button>
+        </div>
+        <div class="fixed-result" id="memo-result" hidden>
+          <p class="eyebrow">정리 예시</p>
+          <p>오늘은 평온하게 하루를 보내고, 아침 식사를 잘 챙겼어요.</p>
+        </div>
+      </section>
+
+      <section class="screen sub-screen result-screen" id="help-screen" aria-labelledby="help-title" hidden>
+        <header class="sub-header">
+          <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
+          <span class="screen-step">도움 요청</span>
+        </header>
+        <div class="help-visual" aria-hidden="true">!</div>
+        <p class="eyebrow">도움이 필요할 때</p>
+        <h1 id="help-title">보호자에게 도움을 요청할까요?</h1>
+        <p class="result-description">버튼을 누르면 보호자에게 확인이 필요하다는 화면을 보여드려요.</p>
+        <div class="summary-card">
+          <strong>도움 요청 준비됨</strong>
+          <span>현재 상태: 도움이 필요해요</span>
+        </div>
+        <button class="primary-button wide-button" id="request-help-button" type="button">보호자에게 도움 요청 보내기</button>
+        <p class="action-feedback" id="help-feedback" role="status" hidden>도움 요청 내용을 준비했어요.</p>
+      </section>
+
+      <section class="screen sub-screen" id="guardian-screen" aria-labelledby="guardian-title" hidden>
+        <header class="sub-header">
+          <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
+          <span class="screen-step">보호자 화면</span>
+        </header>
+        <p class="eyebrow">오늘의 돌봄 요약</p>
+        <h1 id="guardian-title">안부를 확인했어요</h1>
+        <div class="guardian-summary">
+          <div>
+            <span class="summary-label">오늘의 상태</span>
+            <strong>괜찮아요</strong>
+          </div>
+          <span class="summary-check" aria-hidden="true">✓</span>
+        </div>
+        <div class="guardian-block">
+          <div class="block-heading">
+            <h2>최근 기록</h2>
+            <span>11월 5일</span>
+          </div>
+          <ul class="record-summary-list">
+            <li><span>안부</span><strong>괜찮아요</strong></li>
+            <li><span>생활</span><strong>아침 식사 · 8:10</strong></li>
+            <li><span>메모</span><strong>편안한 하루 보내요</strong></li>
+          </ul>
+        </div>
+        <div class="guardian-block">
+          <div class="block-heading">
+            <h2>11월 기록</h2>
+            <span>이번 주</span>
+          </div>
+          <div class="mini-calendar" aria-label="11월 안부 기록">
+            <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
+            <b>3</b><b>4</b><b class="is-today">5</b><b>6</b><b>7</b><b>8</b><b>9</b>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
