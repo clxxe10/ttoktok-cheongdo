@@ -20,12 +20,12 @@
           </button>
         </header>
 
-        <section class="hero" aria-labelledby="page-title">
+        <section class="hero landing-hero" aria-labelledby="page-title">
           <div class="hero-copy">
+            <p class="eyebrow">청도 농가용 작물 상태 기록</p>
             <h1 id="page-title">작물에 이상이 있나요?</h1>
-            <p class="hero-description">이상이 보일 때만 기록하고, 먼저 위험도를 확인하세요.</p>
+            <p class="hero-description">이상이 보일 때만 기록하고, 먼저 확인할 일을 알아보세요.</p>
           </div>
-
           <div class="status-area">
             <button class="status-button" id="start-button" type="button" aria-label="작물 이상 징후 분석 시작">
               <span class="status-glow" aria-hidden="true"></span>
@@ -33,20 +33,13 @@
             </button>
             <p class="status-label">분석 시작</p>
           </div>
-
           <div class="status-controls">
-            <span class="screen-step">청도 농가용 시범 서비스</span>
-            <button class="next-button" id="start-analysis-button" type="button">
+            <span class="screen-step">청도 대표 작물 5종</span>
+            <button class="next-button" type="button" data-screen="intake-screen">
               기록하기 <span aria-hidden="true">→</span>
             </button>
           </div>
-        </section>
-
-        <section class="record-section" aria-labelledby="record-heading">
-          <div class="record-heading">
-            <h2 id="record-heading">이렇게 도와드려요</h2>
-          </div>
-          <div class="record-list">
+          <div class="record-list home-record-list">
             <article class="info-card">
               <div class="card-icon plan-icon" aria-hidden="true">1</div>
               <div class="info-card-content">
@@ -60,12 +53,11 @@
               <div class="info-card-content">
                 <p class="eyebrow">데이터 기반 분석</p>
                 <h3>작물·부위·증상을 함께 살펴요</h3>
-                <span class="card-meta">농촌진흥청 병해충 정보 항목을 참고한 시범 분석입니다.</span>
+                <span class="card-meta">농촌진흥청 정보 항목을 참고한 시범 분석입니다.</span>
               </div>
             </article>
           </div>
         </section>
-        <p class="footer-note">청도 대표 작물 5종을 먼저 고려했어요</p>
       </section>
 
       <section class="screen sub-screen" id="intake-screen" aria-labelledby="intake-title" hidden>
@@ -74,10 +66,9 @@
           <span class="screen-step">1 / 2 작물 선택</span>
         </header>
         <div class="chat-header">
-          <span class="chat-avatar" aria-hidden="true">팜</span>
           <div>
             <p class="eyebrow">작물 상태 기록</p>
-            <h1 id="intake-title">어떤 작물인가요?</h1>
+            <h1 id="intake-title">어떤<br />작물인가요?</h1>
           </div>
         </div>
         <div class="chat-flow">
@@ -103,7 +94,6 @@
           <span class="screen-step">2 / 2 상세 기록</span>
         </header>
         <div class="chat-header">
-          <span class="chat-avatar" aria-hidden="true">팜</span>
           <div>
             <p class="eyebrow" id="selected-crop-label">작물 이상 기록</p>
             <h1 id="detail-title">무엇이 달라졌나요?</h1>
@@ -162,7 +152,9 @@
         <div class="summary-card" id="analysis-summary"></div>
         <div class="stacked-actions">
           <button class="primary-button wide-button" id="new-analysis-button" type="button">다른 작물 다시 분석하기</button>
+          <button class="secondary-button wide-button" id="copy-summary-button" type="button">문의용 요약 복사하기</button>
           <button class="secondary-button wide-button" id="source-button" type="button">분석 기준 보기</button>
+          <p class="copy-status" id="copy-status" role="status" aria-live="polite"></p>
         </div>
       </section>
 
@@ -179,7 +171,7 @@
           <span>현재는 외부 API를 실시간 호출하지 않고, 공개 데이터 구조를 참고한 로컬 분석으로 동작합니다.</span>
           <span>진단이나 방제 처방이 아니므로 실제 농업기술센터의 확인을 함께 받아주세요.</span>
         </div>
-        <a class="secondary-button wide-button" href="https://www.data.go.kr/data/15015158/openapi.do" target="_blank" rel="noreferrer">
+        <a class="secondary-button wide-button" href="https://www.data.go.kr/data/15015158/openapi.do">
           병해충 발생정보 API 보기
         </a>
       </section>
