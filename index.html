@@ -50,8 +50,8 @@
               <div class="card-icon plan-icon" aria-hidden="true">1</div>
               <div class="info-card-content">
                 <p class="eyebrow">먼저 확인</p>
-                <h3>이상 없음과 이상 징후를 구분해요</h3>
-                <span class="card-meta">문제가 있을 때만 자세히 기록합니다.</span>
+                <h3>이상이 보일 때만 기록해요</h3>
+                <span class="card-meta">평소에는 사용하지 않고, 문제가 보일 때 시작합니다.</span>
               </div>
             </article>
             <article class="info-card">
@@ -72,13 +72,13 @@
             </article>
           </div>
         </section>
-        <p class="footer-note">청도 복숭아·감 농가를 먼저 고려했어요</p>
+        <p class="footer-note">청도 대표 작물 5종을 먼저 고려했어요</p>
       </section>
 
       <section class="screen sub-screen" id="intake-screen" aria-labelledby="intake-title" hidden>
         <header class="sub-header">
           <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
-          <span class="screen-step">1 / 2 이상 여부</span>
+          <span class="screen-step">1 / 2 작물 선택</span>
         </header>
         <div class="chat-header">
           <span class="chat-avatar" aria-hidden="true">팜</span>
@@ -90,24 +90,16 @@
         <div class="chat-flow">
           <div class="choice-group" id="crop-choices" aria-label="작물 선택">
             <button type="button" data-crop="복숭아">복숭아</button>
-            <button type="button" data-crop="감">감</button>
-            <button type="button" data-crop="포도">포도</button>
+            <button type="button" data-crop="청도반시">청도반시</button>
             <button type="button" data-crop="사과">사과</button>
-            <button type="button" data-crop="토마토">토마토</button>
-            <button type="button" data-crop="고추">고추</button>
-            <button type="button" data-crop="오이">오이</button>
-            <button type="button" data-crop="벼">벼</button>
+            <button type="button" data-crop="포도">포도</button>
+            <button type="button" data-crop="딸기">딸기</button>
             <button type="button" data-crop="기타">기타</button>
-          </div>
-          <div class="chat-bubble bot-bubble">지금 상태는 어떤가요?</div>
-          <div class="choice-group" id="condition-choices" aria-label="작물 상태 선택">
-            <button type="button" data-condition="normal">이상 없어요</button>
-            <button type="button" data-condition="abnormal">이상 징후가 있어요</button>
           </div>
           <label class="sr-only" for="custom-crop">기타 작물 이름</label>
           <input class="large-input" id="custom-crop" type="text" placeholder="기타를 선택했다면 작물 이름을 적어주세요." hidden />
           <button class="primary-button wide-button" id="continue-intake-button" type="button" disabled>
-            다음 단계
+            증상 입력하기
           </button>
         </div>
       </section>
@@ -125,6 +117,21 @@
           </div>
         </div>
         <div class="chat-flow">
+          <div>
+            <p class="eyebrow">보이는 증상을 모두 골라주세요.</p>
+            <div class="choice-group" id="sign-choices">
+              <button type="button" data-sign="반점">반점</button>
+              <button type="button" data-sign="잎 말림">잎 말림</button>
+              <button type="button" data-sign="벌레">벌레</button>
+              <button type="button" data-sign="시듦">시듦</button>
+              <button type="button" data-sign="곰팡이">곰팡이</button>
+              <button type="button" data-sign="썩음">썩음</button>
+              <button type="button" data-sign="생장 저하">생장 저하</button>
+              <button type="button" data-sign="기타">기타</button>
+            </div>
+          </div>
+          <label class="sr-only" for="other-sign">기타 증상</label>
+          <textarea id="other-sign" rows="3" placeholder="기타 증상이나 주변 상황을 적어주세요."></textarea>
           <div>
             <p class="eyebrow">언제부터 그랬나요?</p>
             <div class="choice-group" id="onset-choices">
@@ -144,21 +151,6 @@
               <button type="button" data-part="전체">전체</button>
             </div>
           </div>
-          <div>
-            <p class="eyebrow">보이는 증상을 모두 골라주세요.</p>
-            <div class="choice-group" id="sign-choices">
-              <button type="button" data-sign="반점">반점</button>
-              <button type="button" data-sign="잎 말림">잎 말림</button>
-              <button type="button" data-sign="벌레">벌레</button>
-              <button type="button" data-sign="시듦">시듦</button>
-              <button type="button" data-sign="곰팡이">곰팡이</button>
-              <button type="button" data-sign="썩음">썩음</button>
-              <button type="button" data-sign="생장 저하">생장 저하</button>
-              <button type="button" data-sign="기타">기타</button>
-            </div>
-          </div>
-          <label class="sr-only" for="other-sign">기타 증상</label>
-          <textarea id="other-sign" rows="3" placeholder="기타 증상이나 주변 상황을 적어주세요."></textarea>
           <label class="sr-only" for="photo-input">현장 사진</label>
           <input id="photo-input" type="file" accept="image/*" />
           <button class="primary-button wide-button" id="analyze-button" type="button">기록 분석하기</button>
@@ -179,23 +171,6 @@
           <button class="primary-button wide-button" id="new-analysis-button" type="button">다른 작물 다시 분석하기</button>
           <button class="secondary-button wide-button" id="source-button" type="button">분석 기준 보기</button>
         </div>
-      </section>
-
-      <section class="screen sub-screen result-screen" id="normal-screen" aria-labelledby="normal-title" hidden>
-        <header class="sub-header">
-          <button class="back-button" type="button" data-home>← <span>처음으로</span></button>
-          <span class="screen-step">상태 기록</span>
-        </header>
-        <div class="result-visual" aria-hidden="true">✓</div>
-        <p class="eyebrow">작물 상태 기록</p>
-        <h1 id="normal-title">현재 이상 징후가 없어요</h1>
-        <p class="result-description">문제가 생겼을 때 다시 기록하면 작물별 증상 분석을 시작할 수 있어요.</p>
-        <div class="summary-card">
-          <strong id="normal-crop-label"></strong>
-          <span>오늘 상태: 이상 없음</span>
-          <span>평소와 달라지는 점이 보이면 부위와 증상을 함께 기록해주세요.</span>
-        </div>
-        <button class="primary-button wide-button" type="button" data-home>처음으로 돌아가기</button>
       </section>
 
       <section class="screen sub-screen" id="source-screen" aria-labelledby="source-title" hidden>

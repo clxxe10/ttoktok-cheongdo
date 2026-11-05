@@ -1,6 +1,5 @@
 const screens = [...document.querySelectorAll(".screen")];
 const cropChoices = document.querySelector("#crop-choices");
-const conditionChoices = document.querySelector("#condition-choices");
 const customCrop = document.querySelector("#custom-crop");
 const continueIntakeButton = document.querySelector("#continue-intake-button");
 const selectedCropLabel = document.querySelector("#selected-crop-label");
@@ -11,7 +10,6 @@ const photoInput = document.querySelector("#photo-input");
 
 const record = {
   crop: "",
-  condition: "",
   onset: "",
   part: "",
   signs: [],
@@ -36,7 +34,6 @@ function selectSingle(group, selectedButton) {
 
 function resetRecord() {
   record.crop = "";
-  record.condition = "";
   record.onset = "";
   record.part = "";
   record.signs = [];
@@ -109,27 +106,14 @@ cropChoices.addEventListener("click", (event) => {
   record.crop = button.dataset.crop;
   selectSingle(cropChoices, button);
   customCrop.hidden = record.crop !== "기타";
-  continueIntakeButton.disabled = !record.crop || !record.condition;
-});
-
-conditionChoices.addEventListener("click", (event) => {
-  const button = event.target.closest("button[data-condition]");
-  if (!button) return;
-  record.condition = button.dataset.condition;
-  selectSingle(conditionChoices, button);
-  continueIntakeButton.disabled = !record.crop || !record.condition;
+  continueIntakeButton.disabled = !record.crop;
 });
 
 customCrop.addEventListener("input", () => {
-  continueIntakeButton.disabled = !record.crop || !record.condition;
+  continueIntakeButton.disabled = !record.crop;
 });
 
 continueIntakeButton.addEventListener("click", () => {
-  if (record.condition === "normal") {
-    document.querySelector("#normal-crop-label").textContent = `${getCropName()} 상태 기록`;
-    showScreen("normal-screen");
-    return;
-  }
   selectedCropLabel.textContent = `${getCropName()} 이상 기록`;
   showScreen("detail-screen");
 });
