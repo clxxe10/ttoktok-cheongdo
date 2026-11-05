@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --background: #ffffff;
-  --surface: #ffffff;
-  --surface-soft: #fbfbfd;
-  --text: #222235;
-  --muted: #9a99a8;
-  --accent: #6c64ba;
-  --border: #f0eff5;
-  --shadow: 0 16px 38px rgba(58, 52, 94, 0.08);
+  --background: #f4f7ef;
+  --surface: #fffefa;
+  --surface-soft: #f8fbf3;
+  --text: #183728;
+  --muted: #718276;
+  --accent: #579435;
+  --border: #e1eadb;
+  --shadow: 0 10px 24px rgba(39, 78, 42, 0.06);
   font-family: "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
@@ -42,10 +42,10 @@ textarea:focus-visible {
 }
 
 .app-shell {
-  width: min(100% - 40px, 480px);
+  width: min(100% - 32px, 520px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 22px 0 28px;
+  padding: 24px 0 32px;
 }
 
 .screen[hidden] {
@@ -61,7 +61,7 @@ textarea:focus-visible {
 }
 
 .brand-name {
-  color: var(--text);
+  color: #397329;
   font-size: 19px;
   font-weight: 750;
   letter-spacing: -0.08em;
@@ -72,7 +72,7 @@ textarea:focus-visible {
   padding: 0;
   border: 0;
   background: transparent;
-  color: #aaa7b7;
+  color: #718276;
   font-size: 12px;
   letter-spacing: -0.03em;
 }
@@ -98,17 +98,17 @@ p {
 }
 
 .hero {
-  padding: 62px 0 0;
+  padding: 48px 0 0;
 }
 
 .hero-copy {
-  text-align: center;
+  text-align: left;
 }
 
 .hero-copy h1 {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: var(--text);
-  font-size: clamp(32px, 9vw, 42px);
+  font-size: clamp(30px, 8vw, 38px);
   font-weight: 700;
   line-height: 1.18;
   letter-spacing: -0.08em;
@@ -118,7 +118,7 @@ p {
 .screen-description,
 .result-description {
   margin-bottom: 0;
-  color: #9796a5;
+  color: var(--muted);
   font-size: 15px;
   letter-spacing: -0.04em;
 }
@@ -126,22 +126,22 @@ p {
 .status-area {
   position: relative;
   display: flex;
-  min-height: 350px;
+  min-height: 214px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 12px;
+  padding-top: 24px;
 }
 
 .status-button {
   position: relative;
   display: grid;
-  width: 282px;
-  height: 282px;
+  width: 100%;
+  height: 164px;
   place-items: center;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
+  border: 1px solid #cfe2c4;
+  border-radius: 26px;
+  background: #e5f2d9;
   isolation: isolate;
   transition: transform 180ms ease;
 }
@@ -156,29 +156,27 @@ p {
 
 .status-glow {
   position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 25%, rgba(176, 236, 255, 0.98), transparent 33%),
-    radial-gradient(circle at 78% 20%, rgba(116, 164, 255, 0.9), transparent 42%),
-    radial-gradient(circle at 72% 76%, rgba(226, 172, 255, 0.88), transparent 43%),
-    radial-gradient(circle at 35% 78%, rgba(112, 218, 210, 0.84), transparent 50%),
-    #a9c9ff;
-  filter: blur(3px);
-  opacity: 0.98;
-  box-shadow:
-    0 0 36px rgba(139, 171, 255, 0.24),
-    0 20px 70px rgba(170, 143, 239, 0.17);
+  inset: 0;
+  border-radius: 25px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(122, 184, 70, 0.16));
+  filter: none;
+  opacity: 1;
+  box-shadow: none;
   z-index: -1;
 }
 
 .status-glow::before {
-  position: absolute;
-  inset: 34px;
-  border-radius: inherit;
-  background: rgba(255, 255, 255, 0.12);
-  content: "";
-  filter: blur(28px);
+  display: none;
+}
+
+.status-prompt {
+  position: relative;
+  z-index: 1;
+  color: #397329;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.07em;
 }
 
 .status-button[data-state="1"] .status-glow {
@@ -219,10 +217,10 @@ p {
 
 .status-label {
   position: absolute;
-  bottom: 0;
+  bottom: 29px;
   margin: 0;
-  color: var(--text);
-  font-size: 18px;
+  color: #2f6d29;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.05em;
 }
@@ -280,7 +278,7 @@ p {
 .next-button,
 .primary-button {
   border: 0;
-  background: #29283f;
+  background: #3d7f2d;
   color: #fff;
   box-shadow: 0 8px 18px rgba(41, 40, 63, 0.14);
 }
@@ -291,7 +289,7 @@ p {
 
 .next-button:hover,
 .primary-button:hover {
-  background: #403c61;
+  background: #306a24;
 }
 
 .next-button:active,
@@ -302,17 +300,17 @@ p {
 
 .secondary-button {
   padding: 0 18px;
-  border: 1px solid #e4e1f1;
-  background: #f8f6ff;
-  color: #6d64ae;
+  border: 1px solid #cfe2c4;
+  background: #f4faef;
+  color: #397329;
 }
 
 .secondary-button:hover {
-  background: #f0edff;
+  background: #e7f3df;
 }
 
 .record-section {
-  margin-top: 112px;
+  margin-top: 66px;
   padding-top: 28px;
   border-top: 1px solid #f1f0f5;
 }
@@ -344,7 +342,7 @@ p {
   position: relative;
   display: flex;
   gap: 14px;
-  min-height: 108px;
+  min-height: 94px;
   padding: 20px 46px 18px 18px;
 }
 
@@ -364,12 +362,12 @@ p {
 }
 
 .plan-icon {
-  background: #fff5dc;
+  background: #edf6e6;
 }
 
 .note-icon {
-  background: #f0ebff;
-  color: #8e7dcc;
+  background: #f1f7e8;
+  color: #6f9c4e;
 }
 
 .life-icon {
@@ -378,8 +376,8 @@ p {
 }
 
 .care-icon {
-  background: #ffedf5;
-  color: #d48bac;
+  background: #e8f4e3;
+  color: #579435;
 }
 
 .info-card-content {
@@ -497,8 +495,8 @@ p {
   height: 46px;
   place-items: center;
   border-radius: 15px;
-  background: #e9e5ff;
-  color: #6c64ba;
+  background: #e7f2df;
+  color: #397329;
   font-weight: 750;
 }
 
@@ -527,7 +525,7 @@ p {
 }
 
 .bot-bubble {
-  background: #f5f3fb;
+  background: #edf5e9;
   color: #5e5a72;
 }
 
@@ -549,16 +547,16 @@ p {
 
 .choice-group button:hover,
 .choice-group button:focus-visible {
-  border-color: #bcb4e6;
-  background: #f8f6ff;
-  color: #6d64ae;
+  border-color: #9fc58c;
+  background: #f1f8ec;
+  color: #397329;
 }
 
 .choice-group button.is-selected {
-  border-color: #9c92d5;
-  background: #eeeaff;
-  color: #655aa8;
-  box-shadow: 0 5px 12px rgba(108, 100, 186, 0.1);
+  border-color: #79ad5d;
+  background: #e3f1d9;
+  color: #397329;
+  box-shadow: 0 5px 12px rgba(73, 128, 45, 0.1);
 }
 
 .chat-step {
@@ -665,7 +663,7 @@ textarea::placeholder {
 .fixed-result {
   margin-top: 14px;
   padding: 16px 18px;
-  background: #fbfaff;
+  background: #f5faef;
   color: #625f70;
   line-height: 1.6;
 }
@@ -687,7 +685,7 @@ textarea::placeholder {
   justify-content: space-between;
   margin: 25px 0 14px;
   padding: 20px;
-  background: linear-gradient(135deg, #f8f6ff, #f1fbfa);
+  background: linear-gradient(135deg, #f1f8eb, #f3fbf5);
 }
 
 .guardian-summary strong {
@@ -782,8 +780,8 @@ textarea::placeholder {
 }
 
 .mini-calendar .is-today {
-  background: #e9e5ff;
-  color: #6c64ba;
+  background: #e2f0d9;
+  color: #397329;
   font-weight: 700;
 }
 
