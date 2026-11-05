@@ -15,12 +15,24 @@ const progressDots = [...document.querySelectorAll(".progress-dot")];
 const progressContainer = document.querySelector("#progress-dots");
 const symptomSummary = document.querySelector("#symptom-summary");
 const symptomFlow = document.querySelector("#symptom-flow");
+const recentHomeRecord = document.querySelector("#recent-home-record");
+const guardianStatusValue = document.querySelector("#guardian-status-value");
+const recentStatusValue = document.querySelector("#recent-status-value");
+const recentLifeValue = document.querySelector("#recent-life-value");
+const recentMemoValue = document.querySelector("#recent-memo-value");
+const memoInput = document.querySelector("#memo-input");
+const memoResult = document.querySelector("#memo-result");
 
 let currentStatusIndex = 0;
 let symptomData = {
   location: "",
   pain: "",
   detail: "",
+};
+const latestRecord = {
+  status: "괜찮아요",
+  life: "아직 기록 없음",
+  memo: "아직 기록 없음",
 };
 
 function showScreen(screenId) {
@@ -57,10 +69,20 @@ function updateStatus() {
   });
 }
 
+function renderLatestRecord() {
+  recentHomeRecord.textContent = `${latestRecord.status} · 오늘`;
+  guardianStatusValue.textContent = latestRecord.status;
+  recentStatusValue.textContent = latestRecord.status;
+  recentLifeValue.textContent = latestRecord.life;
+  recentMemoValue.textContent = latestRecord.memo;
+}
+
 function handleNextAction() {
   statusSaveNote.hidden = true;
 
   if (currentStatusIndex === 0) {
+    latestRecord.status = statuses[currentStatusIndex].label;
+    renderLatestRecord();
     statusSaveNote.hidden = false;
     return;
   }
@@ -162,16 +184,26 @@ document.querySelector("#notify-guardian-button").addEventListener("click", (eve
 });
 
 document.querySelector("#save-symptom-button").addEventListener("click", (event) => {
+  latestRecord.status = statuses[currentStatusIndex].label;
+  latestRecord.life = `${symptomData.location} · ${symptomData.pain}`;
+  renderLatestRecord();
   event.currentTarget.textContent = "기록을 저장했어요";
   event.currentTarget.disabled = true;
   showScreen("home-screen");
 });
 
 document.querySelector("#organize-memo-button").addEventListener("click", () => {
-  document.querySelector("#memo-result").hidden = false;
+  const memo = memoInput.value.trim();
+  memoResult.querySelector("p:last-child").textContent = memo
+    ? `오늘은 “${memo}”라고 기록했어요.`
+    : "아직 입력한 내용이 없어, 오늘의 이야기를 먼저 적어주세요.";
+  memoResult.hidden = false;
 });
 
 document.querySelector("#save-memo-button").addEventListener("click", (event) => {
+  const memo = memoInput.value.trim();
+  latestRecord.memo = memo || "짧은 메모를 남겼어요";
+  renderLatestRecord();
   event.currentTarget.textContent = "메모를 저장했어요";
   event.currentTarget.disabled = true;
   showScreen("home-screen");
